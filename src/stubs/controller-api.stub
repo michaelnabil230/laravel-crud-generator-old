@@ -1,0 +1,83 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ namespacedModel }};
+use {{ rootNamespace }}Http\Controllers\Controller;
+use {{ namespacedRequests }}
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
+class DummyClass extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request): Response
+    {
+        ${{modelVariablePlural}} = {{model}}::query()
+            ->search($request->search)
+            ->latest()
+            ->paginate();
+
+        return ${{modelVariablePlural}};
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \{{ namespacedStoreRequest }}  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store({{ storeRequest }} $request): Response
+    {
+        $requestData = $request->validated();
+        {{fileSnippet}}
+        ${{modelVariable}} = {{model}}::create($requestData);
+
+        return response()->json(${{modelVariable}}, 201);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Http\Response
+     */
+    public function show({{ model }} ${{ modelVariable }})
+    {
+        return ${{modelVariable}};
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \{{ namespacedUpdateRequest }}  $request
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Http\Response
+     */
+    public function update({{ updateRequest }} $request, {{ model }} ${{ modelVariable }}): Response
+    {
+        $requestData = $request->validated();
+        {{fileSnippet}}
+        ${{modelVariable}}->update($requestData);
+
+        return response()->json(${{modelVariable}});
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy({{ model }} ${{ modelVariable }}): Response
+    {
+        ${{modelVariable}}->delete();
+
+        return response()->json(null, 204);
+    }
+}

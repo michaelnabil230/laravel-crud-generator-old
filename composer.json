@@ -1,17 +1,21 @@
 {
     "name": "michaelnabil230/laravel-crud-generator",
-    "description": "This is my package laravel-crud-generator",
+    "description": "Package Of Laravel CRUD Generator",
     "keywords": [
-        "MichaelNabil230",
         "laravel",
-        "laravel-crud-generator"
+        "MichaelNabil230",
+        "laravel-crud-generator",
+        "crud",
+        "crud generator",
+        "laravel crud generator",
+        "api generator"
     ],
     "homepage": "https://github.com/michaelnabil230/laravel-crud-generator",
     "license": "MIT",
     "authors": [
         {
             "name": "Michael Nabil",
-            "email": "46572405+michaelnabil230@users.noreply.github.com",
+            "email": "michaelnabil926@gmail.com",
             "role": "Developer"
         }
     ],
@@ -34,8 +38,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MichaelNabil230\\LaravelCrudGenerator\\": "src",
-            "MichaelNabil230\\LaravelCrudGenerator\\Database\\Factories\\": "database/factories"
+            "MichaelNabil230\\LaravelCrudGenerator\\": "src"
         }
     },
     "autoload-dev": {
@@ -60,10 +63,7 @@
         "laravel": {
             "providers": [
                 "MichaelNabil230\\LaravelCrudGenerator\\LaravelCrudGeneratorServiceProvider"
-            ],
-            "aliases": {
-                "LaravelCrudGenerator": "MichaelNabil230\\LaravelCrudGenerator\\Facades\\LaravelCrudGenerator"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",

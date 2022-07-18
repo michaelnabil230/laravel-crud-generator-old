@@ -1,5 +1,20 @@
-<?php
+## Installation
 
+You can install the package via composer:
+
+```bash
+composer require michaelnabil230/laravel-crud-generator --dev
+```
+
+You can publish the config file with:
+
+```bash
+php artisan vendor:publish --tag="laravel-crud-generator-config"
+```
+
+This is the contents of the published config file:
+
+```php
 return [
     'custom_template' => false,
 
@@ -61,3 +76,12 @@ return [
          */
     ]
 ];
+```
+
+Optionally, you can publish the views using
+
+```bash
+php artisan vendor:publish --tag="laravel-crud-generator-views"
+```
+
+[&larr; Back to index](README.md)
