@@ -224,6 +224,13 @@ class CrudViewCommand extends Command
     protected $viewTemplateDir = '';
 
     /**
+     * User view path
+     *
+     * @var string
+     */
+    protected $userViewPath = '';
+
+    /**
      * Delimiter used for replacing values
      *
      * @var array
@@ -277,7 +284,7 @@ class CrudViewCommand extends Command
             $path = $viewDirectory.$this->viewName.'/';
         }
 
-        $this->viewTemplateDir = isset($this->userViewPath)
+        $this->viewTemplateDir = empty($this->userViewPath)
             ? $this->userViewPath.'.'.$this->viewName
             : $this->viewName;
 
@@ -422,7 +429,7 @@ class CrudViewCommand extends Command
     /**
      * Form field wrapper.
      *
-     * @param  string  $item
+     * @param  array  $item
      * @param  string  $field
      * @return string
      */

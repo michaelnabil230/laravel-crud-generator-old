@@ -196,7 +196,7 @@ class CrudCommand extends Command
     /**
      * Add routes in file.
      *
-     * @return  array
+     * @return  void
      */
     protected function addRoutesInFile($filePath, $routes)
     {

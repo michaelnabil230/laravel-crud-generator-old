@@ -25,6 +25,13 @@ class CrudLangCommand extends Command
     protected $description = 'Create lang file for the Crud.';
 
     /**
+     * The View Directory Path.
+     *
+     * @var string
+     */
+    protected $viewDirectoryPath = '';
+
+    /**
      * Name of the Crud.
      *
      * @var string
@@ -34,7 +41,7 @@ class CrudLangCommand extends Command
     /**
      * The locale string.
      *
-     * @var string
+     * @var array<int, string>
      */
     protected $locales;
 

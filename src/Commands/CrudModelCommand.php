@@ -145,7 +145,7 @@ class CrudModelCommand extends GeneratorCommand
      * @param  array  $replace
      * @param  string  $relationshipName  the name of the function, e.g. owners
      * @param  string  $relationshipType  the type of the relationship, hasOne, hasMany, belongsTo etc
-     * @param  array  $relationshipArgs   args for the relationship function
+     * @param  string  $argsString   args for the relationship function
      */
     protected function createRelationshipFunction($replace, $relationshipName, $relationshipType, $argsString)
     {
