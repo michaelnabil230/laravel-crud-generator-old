@@ -40,8 +40,8 @@ class CrudModelCommand extends GeneratorCommand
     protected function getStub()
     {
         return config('crud-generator.custom_template')
-            ? config('crud-generator.path') . '/model.stub'
-            : __DIR__ . '/../stubs/model.stub';
+            ? config('crud-generator.path').'/model.stub'
+            : __DIR__.'/../stubs/model.stub';
     }
 
     /**
@@ -52,7 +52,7 @@ class CrudModelCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return is_dir(app_path('Models')) ? $rootNamespace . '\\Models' : $rootNamespace;
+        return is_dir(app_path('Models')) ? $rootNamespace.'\\Models' : $rootNamespace;
     }
 
     /**
@@ -86,7 +86,6 @@ class CrudModelCommand extends GeneratorCommand
      * Build the model class with the given name.
      *
      * @param  array  $replace
-     *
      * @return array
      */
     protected function buildRelationships($replace)
@@ -111,7 +110,7 @@ class CrudModelCommand extends GeneratorCommand
                     continue;
                 }
 
-                $argsString .= "'" . trim($v) . "', ";
+                $argsString .= "'".trim($v)."', ";
             }
 
             $argsString = substr($argsString, 0, -2); // remove last comma
@@ -128,7 +127,6 @@ class CrudModelCommand extends GeneratorCommand
      * Build the (optional) soft deletes part for the given stub.
      *
      * @param  array  $replace
-     *
      * @return array
      */
     protected function buildSoftDelete($replace)
@@ -137,29 +135,29 @@ class CrudModelCommand extends GeneratorCommand
 
         return array_merge($replace, [
             '{{softDeletes}}' => $softDelete == 'yes' ? "use SoftDeletes;\n    " : '',
-            '{{useSoftDeletes}}' =>  $softDelete == 'yes' ? "use Illuminate\Database\Eloquent\SoftDeletes;\n" : '',
+            '{{useSoftDeletes}}' => $softDelete == 'yes' ? "use Illuminate\Database\Eloquent\SoftDeletes;\n" : '',
         ]);
     }
 
     /**
      * Create the code for a model relationship
      *
-     * @param array $replace
-     * @param string $relationshipName  the name of the function, e.g. owners
-     * @param string $relationshipType  the type of the relationship, hasOne, hasMany, belongsTo etc
-     * @param array $relationshipArgs   args for the relationship function
+     * @param  array  $replace
+     * @param  string  $relationshipName  the name of the function, e.g. owners
+     * @param  string  $relationshipType  the type of the relationship, hasOne, hasMany, belongsTo etc
+     * @param  array  $relationshipArgs   args for the relationship function
      */
     protected function createRelationshipFunction($replace, $relationshipName, $relationshipType, $argsString)
     {
         $tabIndent = '    ';
-        $code = "public function " . $relationshipName . "()\n" . $tabIndent . "{\n" . $tabIndent . $tabIndent
-            . "return \$this->" . $relationshipType . "(" . $argsString . ");"
-            . "\n" . $tabIndent . "}";
+        $code = 'public function '.$relationshipName."()\n".$tabIndent."{\n".$tabIndent.$tabIndent
+            .'return $this->'.$relationshipType.'('.$argsString.');'
+            ."\n".$tabIndent.'}';
 
         $str = '{{relationships}}';
 
         return array_merge($replace, [
-            '{{relationships}}' => $code . "\n" . $tabIndent . $str,
+            '{{relationships}}' => $code."\n".$tabIndent.$str,
         ]);
     }
 }

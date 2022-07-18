@@ -37,8 +37,8 @@ class CrudRequestCommand extends GeneratorCommand
     protected function getStub()
     {
         return config('crud-generator.custom_template')
-            ? config('crud-generator.path') . '/request.stub'
-            : __DIR__ . '/../stubs/request.stub';
+            ? config('crud-generator.path').'/request.stub'
+            : __DIR__.'/../stubs/request.stub';
     }
 
     /**
@@ -49,7 +49,7 @@ class CrudRequestCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Http\Requests';
+        return $rootNamespace.'\Http\Requests';
     }
 
     /**
@@ -75,7 +75,6 @@ class CrudRequestCommand extends GeneratorCommand
      * Build the replacements for the validation rules.
      *
      * @param  array  $replace
-     *
      * @return array
      */
     protected function buildRulesReplacements($replace)
@@ -93,7 +92,7 @@ class CrudRequestCommand extends GeneratorCommand
                     $parts = explode('#', $rule);
                     $fieldName = trim($parts[0]);
                     $rules = trim($parts[1]);
-                    $validationRules .= "\t\t\t\t\t\t\t\t\t\t\t'$fieldName' => " . json_encode(explode('|', $rules)) . ",\n";
+                    $validationRules .= "\t\t\t\t\t\t\t\t\t\t\t'$fieldName' => ".json_encode(explode('|', $rules)).",\n";
                 });
 
             $validationRules = substr($validationRules, 0, -1); // lose the last comma

@@ -59,5 +59,5 @@ return [
          * Add new stubs templates here if you need to, like action, dataTable...
          * custom_template needs to be activated for this to work
          */
-    ]
+    ],
 ];

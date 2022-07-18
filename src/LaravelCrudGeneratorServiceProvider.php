@@ -2,7 +2,6 @@
 
 namespace MichaelNabil230\LaravelCrudGenerator;
 
-use MichaelNabil230\LaravelCrudGenerator\Commands;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 

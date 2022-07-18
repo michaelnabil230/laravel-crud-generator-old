@@ -56,7 +56,7 @@ class CrudLangCommand extends Command
 
         $this->viewDirectoryPath = config('crud-generator.custom_template')
             ? config('crud-generator.path')
-            : __DIR__ . '/../stubs/';
+            : __DIR__.'/../stubs/';
     }
 
     /**
@@ -72,7 +72,7 @@ class CrudLangCommand extends Command
         $fields = $this->option('fields');
         $fieldsArray = explode(';', $fields);
 
-        $this->formFields = array();
+        $this->formFields = [];
 
         if ($fields) {
             $x = 0;
@@ -86,30 +86,29 @@ class CrudLangCommand extends Command
 
         foreach ($this->locales as $locale) {
             $locale = trim($locale);
-            $path = config('view.paths')[0] . '/../lang/' . $locale . '/';
+            $path = config('view.paths')[0].'/../lang/'.$locale.'/';
 
             //create directory for locale
-            if (!File::isDirectory($path)) {
+            if (! File::isDirectory($path)) {
                 File::makeDirectory($path, 0755, true);
             }
 
-            $langFile = $this->viewDirectoryPath . 'lang.stub';
-            $newLangFile = $path . lcfirst($this->crudName) . '.php';
-            if (!File::copy($langFile, $newLangFile)) {
+            $langFile = $this->viewDirectoryPath.'lang.stub';
+            $newLangFile = $path.lcfirst($this->crudName).'.php';
+            if (! File::copy($langFile, $newLangFile)) {
                 echo "failed to copy $langFile...\n";
             } else {
                 $this->templateVars($newLangFile);
             }
 
-            $this->info('Lang [' . $locale . '] created successfully.');
+            $this->info('Lang ['.$locale.'] created successfully.');
         }
     }
 
     /**
      * Translate form's fields.
      *
-     * @param  string $newLangFile
-     *
+     * @param  string  $newLangFile
      * @return void
      */
     private function templateVars($newLangFile)

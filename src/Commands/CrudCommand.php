@@ -2,9 +2,9 @@
 
 namespace MichaelNabil230\LaravelCrudGenerator\Commands;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use MichaelNabil230\LaravelCrudGenerator\Commands\Traits\ProcessJSON;
 
 class CrudCommand extends Command
@@ -89,13 +89,13 @@ class CrudCommand extends Command
             '--fillable' => $fillable,
             '--table' => $tableName,
             '--relationships' => $relationships,
-            '--soft-deletes' => $softDeletes
+            '--soft-deletes' => $softDeletes,
         ]);
         $this->call('crud:migration', [
             'name' => $tableName,
             '--schema' => $migrationFields,
             '--foreign-keys' => $foreignKeys,
-            '--soft-deletes' => $softDeletes
+            '--soft-deletes' => $softDeletes,
         ]);
 
         if ($type == 'web') {
@@ -105,7 +105,7 @@ class CrudCommand extends Command
                 '--validations' => $validations,
                 '--view-path' => $viewPath,
                 '--route-group' => $this->option('route-group'),
-                '--localize' => $localize
+                '--localize' => $localize,
             ]);
         }
 
@@ -113,7 +113,7 @@ class CrudCommand extends Command
             $this->call('crud:lang', [
                 'name' => $name,
                 '--fields' => $fields,
-                '--locales' => $locales
+                '--locales' => $locales,
             ]);
         }
 
@@ -128,11 +128,11 @@ class CrudCommand extends Command
         $routeGroup = $this->option('route-group');
 
         $routeName = $routeGroup ?
-            $routeGroup . '/' . Str::snake(Str::plural($name), '-')
+            $routeGroup.'/'.Str::snake(Str::plural($name), '-')
             : Str::snake(Str::plural($name), '-');
 
         $controllerNamespace = $this->getDefaultControllerNamespace();
-        $controller = ($controllerNamespace != '') ? $controllerNamespace . $name . 'Controller' : $name . 'Controller';
+        $controller = ($controllerNamespace != '') ? $controllerNamespace.$name.'Controller' : $name.'Controller';
 
         // Set routes
         if ($type == 'web') {
@@ -149,7 +149,7 @@ class CrudCommand extends Command
      */
     protected function getDefaultControllerNamespace()
     {
-        return ($this->option('controller-namespace')) ? $this->option('controller-namespace') . '\\' : '';
+        return ($this->option('controller-namespace')) ? $this->option('controller-namespace').'\\' : '';
     }
 
     /**
@@ -166,20 +166,20 @@ class CrudCommand extends Command
         foreach ($fieldsArray as $item) {
             $spareParts = explode('#', trim($item));
             $fillableArray[] = $spareParts[0];
-            $modifier = !empty($spareParts[2]) ? $spareParts[2] : 'nullable';
+            $modifier = ! empty($spareParts[2]) ? $spareParts[2] : 'nullable';
 
             // Process migration fields
-            $migrationFields .= $spareParts[0] . '#' . $spareParts[1];
-            $migrationFields .= '#' . $modifier;
+            $migrationFields .= $spareParts[0].'#'.$spareParts[1];
+            $migrationFields .= '#'.$modifier;
             $migrationFields .= ';';
         }
 
         $commaSeparatedString = implode("', '", $fillableArray);
-        $fillable = "['" . $commaSeparatedString . "']";
+        $fillable = "['".$commaSeparatedString."']";
 
         return [
             $fillable,
-            $migrationFields
+            $migrationFields,
         ];
     }
 
@@ -190,7 +190,7 @@ class CrudCommand extends Command
      */
     protected function route($type, $routeName, $controller)
     {
-        return ["Route::" . $type . "('" . $routeName . "', " . $controller . '::class' . ");"];
+        return ['Route::'.$type."('".$routeName."', ".$controller.'::class'.');'];
     }
 
     /**
@@ -203,13 +203,12 @@ class CrudCommand extends Command
         $routeFile = base_path($filePath);
 
         if (file_exists($routeFile) && (strtolower($this->option('route')) === 'yes')) {
-
-            $isAdded = File::append($routeFile, "\n" . implode("\n", $routes));
+            $isAdded = File::append($routeFile, "\n".implode("\n", $routes));
 
             if ($isAdded) {
-                $this->info('Crud/Resource route added to ' . $filePath);
+                $this->info('Crud/Resource route added to '.$filePath);
             } else {
-                $this->info('Unable to add the route to ' . $filePath);
+                $this->info('Unable to add the route to '.$filePath);
             }
         }
     }

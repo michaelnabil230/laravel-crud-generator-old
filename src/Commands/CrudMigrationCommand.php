@@ -70,15 +70,14 @@ class CrudMigrationCommand extends GeneratorCommand
     protected function getStub()
     {
         return config('crud-generator.custom_template')
-            ? config('crud-generator.path') . '/migration.stub'
-            : __DIR__ . '/../stubs/migration.stub';
+            ? config('crud-generator.path').'/migration.stub'
+            : __DIR__.'/../stubs/migration.stub';
     }
 
     /**
      * Get the full path to the migration.
      *
      * @param  string  $name
-     *
      * @return string
      */
     protected function getPath($name)
@@ -86,7 +85,7 @@ class CrudMigrationCommand extends GeneratorCommand
         $tableName = $this->argument('name');
         $datePrefix = date('Y_m_d_His');
 
-        return database_path('/migrations/' . $datePrefix . '_create_' . $tableName . '_table.php');
+        return database_path('/migrations/'.$datePrefix.'_create_'.$tableName.'_table.php');
     }
 
     /**
@@ -116,7 +115,6 @@ class CrudMigrationCommand extends GeneratorCommand
      * Build the schemaUp for the given stub.
      *
      * @param  array  $replace
-     *
      * @return array
      */
     protected function buildSchemaUp($replace)
@@ -144,7 +142,7 @@ class CrudMigrationCommand extends GeneratorCommand
         $fields = explode(';', $schema);
         $data = [];
 
-        if (!$schema) {
+        if (! $schema) {
             return $data;
         }
 
@@ -171,7 +169,7 @@ class CrudMigrationCommand extends GeneratorCommand
             ];
 
             if (isset($fieldArray[2]) && in_array(trim($fieldArray[2]), $modifierLookup)) {
-                $data[$index]['modifier'] = "->" . trim($fieldArray[2]) . "()";
+                $data[$index]['modifier'] = '->'.trim($fieldArray[2]).'()';
             }
         }
 
@@ -186,20 +184,20 @@ class CrudMigrationCommand extends GeneratorCommand
 
                 if ($type === 'select' || $type === 'enum') {
                     $enumOptions = array_keys(json_decode($item['options'], true));
-                    $enumOptionsStr = implode(",", array_map(function ($string) {
-                        return '"' . $string . '"';
+                    $enumOptionsStr = implode(',', array_map(function ($string) {
+                        return '"'.$string.'"';
                     }, $enumOptions));
-                    $schemaFields .= "\$table->" . $type . "('" . $item['name'] . "', [" . $enumOptionsStr . "])";
+                    $schemaFields .= '$table->'.$type."('".$item['name']."', [".$enumOptionsStr.'])';
                 } else {
-                    $schemaFields .= "\$table->" . $type . "('" . $item['name'] . "')";
+                    $schemaFields .= '$table->'.$type."('".$item['name']."')";
                 }
             } else {
-                $schemaFields .= "\$table->string('" . $item['name'] . "')";
+                $schemaFields .= "\$table->string('".$item['name']."')";
             }
 
             // Append column modifier
             $schemaFields .= $item['modifier'];
-            $schemaFields .= ";\n" . $tabIndent . $tabIndent . $tabIndent;
+            $schemaFields .= ";\n".$tabIndent.$tabIndent.$tabIndent;
         }
     }
 
@@ -208,7 +206,7 @@ class CrudMigrationCommand extends GeneratorCommand
         $softDeletes = $this->option('soft-deletes');
 
         $softDeletesSnippets = $softDeletes == 'yes'
-            ? "\$table->softDeletes();\n" . $tabIndent . $tabIndent . $tabIndent
+            ? "\$table->softDeletes();\n".$tabIndent.$tabIndent.$tabIndent
             : '';
 
         return $softDeletesSnippets;
@@ -230,18 +228,18 @@ class CrudMigrationCommand extends GeneratorCommand
             // parts[1] = unique specified
             $parts = explode('#', $line);
             if (strpos($parts[0], '|') !== 0) {
-                $fieldNames = "['" . implode("', '", explode('|', $parts[0])) . "']"; // wrap single quotes around each element
+                $fieldNames = "['".implode("', '", explode('|', $parts[0]))."']"; // wrap single quotes around each element
             } else {
                 $fieldNames = trim($parts[0]);
             }
 
             if (count($parts) > 1 && $parts[1] == 'unique') {
-                $schemaFields .= "\$table->unique(" . trim($fieldNames) . ")";
+                $schemaFields .= '$table->unique('.trim($fieldNames).')';
             } else {
-                $schemaFields .= "\$table->index(" . trim($fieldNames) . ")";
+                $schemaFields .= '$table->index('.trim($fieldNames).')';
             }
 
-            $schemaFields .= ";\n" . $tabIndent . $tabIndent . $tabIndent;
+            $schemaFields .= ";\n".$tabIndent.$tabIndent.$tabIndent;
         }
     }
 
@@ -256,21 +254,21 @@ class CrudMigrationCommand extends GeneratorCommand
             // if we don't have three parts, then the foreign key isn't defined properly
             // --foreign-keys="foreign_entity_id#id#foreign_entity#onDelete#onUpdate"
             if (count($parts) == 3) {
-                $schemaFields .= "\$table->foreign('" . trim($parts[0]) . "')"
-                    . "->references('" . trim($parts[1]) . "')->on('" . trim($parts[2]) . "')";
+                $schemaFields .= "\$table->foreign('".trim($parts[0])."')"
+                    ."->references('".trim($parts[1])."')->on('".trim($parts[2])."')";
             } elseif (count($parts) == 4) {
-                $schemaFields .= "\$table->foreign('" . trim($parts[0]) . "')"
-                    . "->references('" . trim($parts[1]) . "')->on('" . trim($parts[2]) . "')"
-                    . "->onDelete('" . trim($parts[3]) . "')" . "->onUpdate('" . trim($parts[3]) . "')";
+                $schemaFields .= "\$table->foreign('".trim($parts[0])."')"
+                    ."->references('".trim($parts[1])."')->on('".trim($parts[2])."')"
+                    ."->onDelete('".trim($parts[3])."')"."->onUpdate('".trim($parts[3])."')";
             } elseif (count($parts) == 5) {
-                $schemaFields .= "\$table->foreign('" . trim($parts[0]) . "')"
-                    . "->references('" . trim($parts[1]) . "')->on('" . trim($parts[2]) . "')"
-                    . "->onDelete('" . trim($parts[3]) . "')" . "->onUpdate('" . trim($parts[4]) . "')";
+                $schemaFields .= "\$table->foreign('".trim($parts[0])."')"
+                    ."->references('".trim($parts[1])."')->on('".trim($parts[2])."')"
+                    ."->onDelete('".trim($parts[3])."')"."->onUpdate('".trim($parts[4])."')";
             } else {
                 continue;
             }
 
-            $schemaFields .= ";\n" . $tabIndent . $tabIndent . $tabIndent;
+            $schemaFields .= ";\n".$tabIndent.$tabIndent.$tabIndent;
         }
     }
 }

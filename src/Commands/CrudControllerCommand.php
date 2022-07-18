@@ -2,9 +2,9 @@
 
 namespace MichaelNabil230\LaravelCrudGenerator\Commands;
 
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Console\GeneratorCommand;
 
 class CrudControllerCommand extends GeneratorCommand
 {
@@ -45,17 +45,17 @@ class CrudControllerCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        if (!config('crud-generator.custom_template')) {
+        if (! config('crud-generator.custom_template')) {
             if ($this->option('type') == 'web') {
-                return __DIR__ . '/../stubs/controller.stub';
+                return __DIR__.'/../stubs/controller.stub';
             } else {
-                return __DIR__ . '/../stubs/controller-api.stub';
+                return __DIR__.'/../stubs/controller-api.stub';
             }
         } else {
             if ($this->option('type') == 'web') {
-                return config('crud-generator.path') . '/controller.stub';
+                return config('crud-generator.path').'/controller.stub';
             } else {
-                return config('crud-generator.path') . '/controller-api.stub';
+                return config('crud-generator.path').'/controller-api.stub';
             }
         }
     }
@@ -67,19 +67,18 @@ class CrudControllerCommand extends GeneratorCommand
      */
     protected function getNameInput()
     {
-        return trim($this->argument('name')) . 'Controller';
+        return trim($this->argument('name')).'Controller';
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param  string $rootNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\\' . ($this->option('controller-namespace') ? $this->option('controller-namespace') : 'Http\Controllers');
+        return $rootNamespace.'\\'.($this->option('controller-namespace') ? $this->option('controller-namespace') : 'Http\Controllers');
     }
 
     /**
@@ -105,12 +104,12 @@ class CrudControllerCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $viewPath = $this->option('view-path') ? $this->option('view-path') . '.' : '';
+        $viewPath = $this->option('view-path') ? $this->option('view-path').'.' : '';
         $crudName = strtolower($this->argument('name'));
         $crudNameSingular = Str::singular($crudName);
         $crudNamePlural = Str::plural($crudName);
         $modelClass = $this->parseModel($this->option('model'));
-        $routeGroup = ($this->option('route-group')) ? $this->option('route-group') . '/' : '';
+        $routeGroup = ($this->option('route-group')) ? $this->option('route-group').'/' : '';
         $routePrefix = ($this->option('route-group')) ? $this->option('route-group') : '';
         $routePrefixCap = ucfirst($routePrefix);
         $viewName = Str::snake($this->argument('name'), '-');
@@ -178,9 +177,9 @@ class CrudControllerCommand extends GeneratorCommand
 
     protected function buildFileSnippetReplacements($replace, $fields)
     {
-        $snippet = <<<EOD
-        if (\$request->hasFile('{{fieldName}}')) {
-            \$requestData['{{fieldName}}'] = \$request->file('{{fieldName}}')->store('uploads', 'public');
+        $snippet = <<<'EOD'
+        if ($request->hasFile('{{fieldName}}')) {
+            $requestData['{{fieldName}}'] = $request->file('{{fieldName}}')->store('uploads', 'public');
         }
         EOD;
 
@@ -191,7 +190,7 @@ class CrudControllerCommand extends GeneratorCommand
             foreach ($fieldsArray as $index => $item) {
                 $itemArray = explode('#', $item);
                 if (trim($itemArray[1]) == 'file') {
-                    $fileSnippet .= str_replace('{{fieldName}}', trim($itemArray[0]), $snippet) . "\n";
+                    $fileSnippet .= str_replace('{{fieldName}}', trim($itemArray[0]), $snippet)."\n";
                 }
             }
         }
@@ -223,10 +222,10 @@ class CrudControllerCommand extends GeneratorCommand
             $validations,
         );
 
-        $namespacedRequests = $namespace . '\\' . $storeRequestClass . ';';
+        $namespacedRequests = $namespace.'\\'.$storeRequestClass.';';
 
         if ($storeRequestClass !== $updateRequestClass) {
-            $namespacedRequests .= PHP_EOL . 'use ' . $namespace . '\\' . $updateRequestClass . ';';
+            $namespacedRequests .= PHP_EOL.'use '.$namespace.'\\'.$updateRequestClass.';';
         }
 
         return array_merge($replace, [
@@ -234,10 +233,10 @@ class CrudControllerCommand extends GeneratorCommand
             '{{storeRequest}}' => $storeRequestClass,
             '{{ updateRequest }}' => $updateRequestClass,
             '{{updateRequest}}' => $updateRequestClass,
-            '{{ namespacedStoreRequest }}' => $namespace . '\\' . $storeRequestClass,
-            '{{namespacedStoreRequest}}' => $namespace . '\\' . $storeRequestClass,
-            '{{ namespacedUpdateRequest }}' => $namespace . '\\' . $updateRequestClass,
-            '{{namespacedUpdateRequest}}' => $namespace . '\\' . $updateRequestClass,
+            '{{ namespacedStoreRequest }}' => $namespace.'\\'.$storeRequestClass,
+            '{{namespacedStoreRequest}}' => $namespace.'\\'.$storeRequestClass,
+            '{{ namespacedUpdateRequest }}' => $namespace.'\\'.$updateRequestClass,
+            '{{namespacedUpdateRequest}}' => $namespace.'\\'.$updateRequestClass,
             '{{ namespacedRequests }}' => $namespacedRequests,
             '{{namespacedRequests}}' => $namespacedRequests,
         ]);
@@ -254,14 +253,14 @@ class CrudControllerCommand extends GeneratorCommand
      */
     protected function generateFormRequests($modelClass, $storeRequestClass, $updateRequestClass, $validations)
     {
-        $storeRequestClass = 'Store' . class_basename($modelClass) . 'Request';
+        $storeRequestClass = 'Store'.class_basename($modelClass).'Request';
 
         $this->call('crud:request', [
             'name' => $storeRequestClass,
             '--validations' => $validations,
         ]);
 
-        $updateRequestClass = 'Update' . class_basename($modelClass) . 'Request';
+        $updateRequestClass = 'Update'.class_basename($modelClass).'Request';
 
         $this->call('crud:request', [
             'name' => $updateRequestClass,

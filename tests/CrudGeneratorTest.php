@@ -2,8 +2,6 @@
 
 namespace MichaelNabil230\LaravelCrudGenerator\Tests;
 
-use MichaelNabil230\LaravelCrudGenerator\Tests\TestCase;
-
 class CrudGeneratorTest extends TestCase
 {
     public function test_crud_generate_command()
@@ -53,11 +51,11 @@ class CrudGeneratorTest extends TestCase
     {
         $this->artisan('crud:view', [
             'name' => 'customers',
-            '--fields' => "title#string; body#text",
+            '--fields' => 'title#string; body#text',
         ]);
 
         $this->assertContains('View created successfully.', $this->consoleOutput());
 
-        $this->assertDirectoryExists(config('view.paths')[0] . '/customers');
+        $this->assertDirectoryExists(config('view.paths')[0].'/customers');
     }
 }
